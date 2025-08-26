@@ -1,0 +1,54 @@
+{%extends "base.html"%}
+{%block content%}
+
+<form  class="rejlog" action="logowanie" method="post" >
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  <!-- <a href="https://www.freepik.com/free-photo/full-body-portrait-athletic-shirtless-male-doing-biceps-workouts-with-dumbbells-gym-club_24475957.htm#query=gym&position=9&from_view=keyword&track=sph">Image by fxquadro</a> on Freepik -->
+  <section class="h-100 " style="background-color: #262626;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+          <div class="card card-registration my-4"style="border:none;">
+            <div class="row g-0" >
+              <div class="col-xl-6 d-none d-xl-block ">
+                <img src="static/img1.jpg"
+                  alt="Sample photo" class="img-fluid "
+                  style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+              </div>
+              <div class="bgreg col-xl-6 bg-dark">
+                <div class="card-body p-md-5 text-white">
+                  <h3 class="mb-5 text-uppercase">Logowanie</h3>
+                  {{msg}}
+                  <hr class="bg-light">
+
+  
+                  <div class="form-outline mb-4">
+                    <input type="text"   name="login" class="form-control form-control-lg bg-secondary" />
+                    <label class="form-label" for="form3Example8">Login/Adres email</label>
+                  </div>
+  
+                  <div class="form-outline mb-4">
+                    <input type="password" name="haslo"  class="form-control form-control-lg bg-secondary" />
+                    <label class="form-label" for="form3Example8">Hasło</label>
+                  </div>
+  
+                  
+
+                  <p>Nie masz jeszcze konta? <a href="/rejestracja">Zarejestruj się</a></p>
+                  <p>Zapomniałeś hasła? <a href="/reset_hasla">Zresetuj je za pomocą maila</a></p>
+
+                  <div class="d-flex justify-content-end pt-3">
+                    <button type="reset" class="btn btn-light btn-lg">Wyczyść</button>
+                    <button type="submit" class="btn btn-primary btn-lg ms-2">Zaloguj się</button>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+
+{%endblock%}

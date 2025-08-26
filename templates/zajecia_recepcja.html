@@ -1,0 +1,154 @@
+{%extends "base.html"%}
+{%block content%}
+
+
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+          <h5 class="card-title text-primary mt-2">Zapis na zajęcia</h5>
+          <hr class="bg-light">
+          
+          {%if msgWarning %}<p class="text-warning">{{msgWarning}}</p>{%endif%}
+          {%if msgSuccess %}<p class="text-success">{{msgSuccess}}</p>{%endif%}
+            <div class="table-responsive ">
+              <form action="/payment_summary" method="POST"  id="zapisForm" >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <p>Filtr</p>
+                  <input type="text" id="target" class="mb-2 form-control form-control-lg bg-secondary" />
+                  <p>Klient (ID, Imię, Nazwisko, Email):</p> 
+                <select class="form-select bg-secondary text-light " name="obslugiwany_uzytkownik">
+                  {%for uzytkownik in uzytkownicy_lista%}
+                  <option data-obslugiwany="{{uzytkownik[0]}}{{uzytkownik[1]}}{{uzytkownik[2]}}{{uzytkownik[3]}}" class="obslugiwany-option" value="{{uzytkownik[3]}}"><span>#{{uzytkownik[0]}} {{uzytkownik[1]}} {{uzytkownik[2]}} {{uzytkownik[3]}}</span></option>
+                  {%endfor%}
+                </select>
+                
+                <table class="table table-striped table-dark align-middle text-center">
+                    <thead>
+                        <tr class="align-middle">
+                            <th scope="col">Nazwa zajęć</th>
+                            <th scope="col">Szczegóły</th>
+                            <th scope="col">Data zajęć</th>
+                            <th scope="col">Godzina rozpoczęcia</th>
+                            <th scope="col">Trener</th>
+                            <th scope="col">Czas [min]</th>
+                            <th scope="col">Cena </th>
+                            <th scope="col">Zapisanych/Liczba miejsc</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for zajecia in lista_zajec %}
+                        
+                            <tr>
+                                <th scope="row">{{ zajecia[0] }}</th>
+                                <td class="text-justify">{{ zajecia[1] }}</td>
+                                <td>{{ zajecia[2] }}</td>
+                                <td>{{ zajecia[3] }}</td>
+                                <td>{{ zajecia[8] }} {{ zajecia[9] }}</td>
+                                <td>{{ zajecia[4] }}</td>
+                                <td>{{ zajecia[5] }}</td>
+                                {% if zajecia[11]|int >= zajecia[6]|int %}<td class="text-danger">{{ zajecia[11] }}/{{zajecia[6]}}</td>
+                                {% elif 0.75 <= zajecia[11]|int / zajecia[6]|int < 1 %}<td class="text-warning">{{ zajecia[11] }}/{{zajecia[6]}}</td>
+                                {% elif zajecia[11]|int / zajecia[6]|int < 0.75 %}<td class="text-success">{{ zajecia[11] }}/{{zajecia[6]}}</td>{%endif%}
+                                <td>
+
+                                  
+                                 
+                                  
+                                  {% if zajecia[11]|int < zajecia[6]|int %}
+                                    <button type="button" class="btn btn-primary zapiszBtn" data-id="{{ zajecia[10] }}" data-cena="{{ zajecia[5] }}" data-nazwa="{{ zajecia[0] }}" style="width:150px;">
+                                        Dodaj klienta
+                                    </button>
+                                   
+                                    {%elif zajecia[11]|int >= zajecia[6]|int%}
+                                    <button type="button" class="btn btn-primary " data-id="{{ zajecia[10] }}" data-cena="{{ zajecia[5] }}" data-nazwa="{{ zajecia[0] }}" style="width:150px;" disabled>
+                                      Brak miejsc
+                                  </button>
+                                    {%endif%}
+                                    <input type="hidden" name="zakup" value="zajecia" />
+                                    
+                                </td>
+                            </tr>
+                         
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <input type="hidden" name="zakup" value="zajecia" />
+                <input type="hidden" name="id_zajec" id="zajeciaId" value="" />
+                <input type="hidden" name="cena_zajec" id="zajeciaCena" value="" />
+                <input type="hidden" name="nazwa_zajec" id="zajeciaNazwa" value="" />
+                <input type="hidden" name="obslugiwany_uzytkownik" id="uzytkownikObslugiwany" value="" />
+
+            </form>
+            </div>
+
+           
+            <div class="pagination justify-content-center">
+              <ul class="pagination">
+                  {% if pagination.has_prev %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('zajecia_recepcja', page=pagination.prev_num) }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+                  
+                  {% for page_num in pagination.pages %}
+                      {% if page_num == pagination.page %}
+                          <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                      {% else %}
+                          <li class="page-item"><a class="page-link" href="{{ url_for('zajecia_recepcja', page=page_num) }}">{{ page_num }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                  
+                  {% if pagination.has_next %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('zajecia_recepcja', page=pagination.next_num) }}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.querySelectorAll('.zapiszBtn').forEach(function(button) {
+      button.addEventListener('click', function() {
+          var id = button.getAttribute('data-id');
+          var cena = button.getAttribute('data-cena');
+          var nazwa = button.getAttribute('data-nazwa');
+          var obslugiwany = button.getAttribute('data-obslugiwany');
+
+          document.getElementById('zajeciaId').value = id;
+          document.getElementById('zajeciaCena').value = cena;
+          document.getElementById('zajeciaNazwa').value = nazwa;
+          document.getElementById('uzytkownikObslugiwany').value = obslugiwany;
+          document.getElementById('zapisForm').submit();
+      });
+  });
+
+
+  
+  document.getElementById('target').addEventListener('input', function() {
+      var inputText = this.value.toLowerCase();
+      var options = document.getElementsByClassName('obslugiwany-option');
+
+      for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+            options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].style.display !== 'none') {
+                options[i].selected = true;
+                break;
+            }
+        }
+  });
+
+</script>
+
+{%endblock%}

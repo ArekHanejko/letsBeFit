@@ -1,0 +1,74 @@
+{%extends "base.html"%}
+{%block content%}
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+          <p class="text-success">{{msg}}</p>
+            <div class="container m-0 " style="max-width:none;">
+              <div class="row">
+                  <div class="col-lg-4 col-12 d-flex align-items-center text-center">
+                      <div><p class="card-title">Witaj na stronie siłowni LetsBeFit! Znajdziesz tu wszystko co trzeba aby rozpocząć swoją sportową drogę! W naszej ofercie mamy karnety aktywne przez miesiąc, trzy a nawet pół roku! Zaloguj się aby otrzymać możliwość wykupu karnetu lub dołączenia do zajęć grupowych prowadzonych pod okiem naszych trenerów!</p>
+                  {% if 'login' not in session %}<a href="/logowanie" ><button class="btn btn-primary p-3 w-100 mt-5">Zaloguj się</button></a>{%endif%}
+                  {% if 'login' not in session %}<a href="/rejestracja" ><button class="btn btn-primary p-3 w-100 mt-5">Zarejestruj się</button></a>{%endif%}
+                  {% if 'login' in session and session['rola'] in ('uzytkownik')%}<a href="/karnety" ><button class="btn btn-primary p-3 w-100 mt-5">Kup karnet</button></a>{%endif%}
+                  {% if 'login' in session and session['rola'] in ('uzytkownik')%}<a href="/zajecia" ><button class="btn btn-primary p-3 w-100 mt-5">Zapisz się na zajęcia</button></a>{%endif%}
+
+                </div>
+                  
+                    </div>
+                  <div class="col-lg-8 col-12 ">
+                    <div id="carouselExample" class="carousel slide mt-5" style="margin-right: 50px; margin-bottom: 50px;" data-bs-ride="carousel" data-bs-interval="5000">
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <img src="../static/slider_silownia.jpg" class="d-block w-100" alt="...">
+                          <div class="carousel-caption  d-md-block w-100" style="margin-left: -15%; margin-bottom: -4%;  backdrop-filter: blur(10px);">
+                            <h5>Karnety na różny okres czasu</h5>
+                            <p>Nie jesteś pewny czy zagościsz u nas na dłużej? Nie musisz od razu kupować karnetów na długi okres, sprawdź czy nasza siłownia Ci odpowiada korzystając z karnetu NORMAL ważnego przez miesiąc.</p>
+                          </div>
+                        </div>
+                  
+                        <div class="carousel-item ">
+                          <img src="../static/slider_zaj_grp.jpg" class="d-block w-100" alt="...">
+                          <div class="carousel-caption  d-md-block w-100" style=" margin-left: -15%; margin-bottom: -4%; backdrop-filter: blur(10px);;">
+                            <h5>Zajęcia z trenerami</h5>
+                            <p>Nie wiesz jak ćwiczyć? A może chcesz potrenować w grupie nie tylko na ciężarach? W zakładce zajęcia znajdziesz harmonogram zajęć z trenerami na najbliższy miesiąc</p>
+                          </div>
+                        </div>
+                  
+                        <div class="carousel-item">
+                          <img src="../static/slider_time.jpg" class="d-block w-100" alt="...">
+                          <div class="carousel-caption  d-md-block  w-100 " style="margin-left: -15%; margin-bottom: -4%;  backdrop-filter: blur(10px); background-color: rgba(0,0,0,0.6)">
+                            <h5 style="opacity: 1;">Wykresy natężenia ruchu</h5>
+                            <p style="opacity: 1;">Wolisz ćwiczyć w luźniejszej atmosferze? Czujesz się niekofortowo w godzinach w których jest masa ludzi? W zakładce statystyki możesz zobaczyć jak wygląda przeciętnie ruch u nas ww poszczególnych godzinach.</p>
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Poprzedni</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Następny</span>
+                      </button>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          
+          
+            
+        
+            
+         
+          
+        </div>
+    </div>
+</div>
+
+
+<!-- Image by <a href="https://www.freepik.com/free-photo/close-up-white-clock-ticking-showing-8-oclock_3956503.htm#page=4&query=time&position=1&from_view=search&track=sph&uuid=7b3cb35a-1f73-4e7d-9d00-2314cc68568a">Freepik</a> -->
+
+  
+{%endblock%}

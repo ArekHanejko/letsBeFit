@@ -1,0 +1,133 @@
+{%extends "base.html"%}
+{%block content%}
+
+
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+            <h5 class="card-title text-primary">Profil Trenera</h5>
+            <hr class="bg-light">
+            <h3 class="text-success">{{msg}}</h3>
+            <div class="container m-0 " style="max-width:none;">
+              <div class="row">
+                  <div class="col-lg-2 col-12 d-flex align-items-center ">
+                      <!-- Zawartość pierwszego diva -->
+                      Imię: {{ imie }}</br>
+                      Nazwisko: {{ nazwisko }}</br>
+                      E-mail (login): {{ login }}</br>
+                      Nr telefonu: {{ nr_tel }}</br>
+                      Płeć: {{ plec }}</br>
+                      Data dołączenia: {{ data_dolaczenia }}</br>
+                  </div>
+                  <div class="col-lg-10 col-12 ">
+                      <h6 class="card-title text-primary mt-5 mt-lg-0">Nowe zajęcia</h5>
+                      <hr class="bg-light">
+                      <form class="rejlog" action="dodaj_zajecia" method="POST" id="zapisForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                        Nazwa zajęć: <input type="text" name="nazwa_zajec"  class="form-control form-control-lg bg-secondary" required/>
+                        Opis zajęć: <input type="text"  name="opis_zajec" maxlength="200"  class="form-control form-control-lg bg-secondary" required/>
+                        Data zajęć: <input type="date"  name="data_zajec"  class="form-control form-control-lg bg-secondary" required/>
+                        Godzina zajęć: <input type="time"  name="godz_zajec"  class="form-control form-control-lg bg-secondary" required/>
+                        Czas trwania zajęć (w min.): <input type="number"  name="czas_zajec"  id="numericInput1" oninput="validateNumberInput(this)"  class="form-control form-control-lg bg-secondary" required/>
+                        Cena zajęć (w zł): <input type="number"  name="cena_zajec"  input type="number" id="numericInput2" oninput="validateNumberInput(this)"  class="form-control form-control-lg bg-secondary" required/>
+                        Liczba miejsc: <input type="number"  name="liczba_miejsc"  id="numericInput3" oninput="validateNumberInput(this)"  class="form-control form-control-lg bg-secondary" required/>
+
+                        <button type="submit" class="btn btn-primary btn-lg  mt-2">Dodaj</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+          
+          
+            
+            <input type="hidden" name="imie" value="{{ imie }}">
+            <input type="hidden" name="nazwisko" value="{{ nazwisko }}">
+            <input type="hidden" name="typ_karnetu" value="{{ typ_karnetu }}">
+            <input type="hidden" name="cena" value="{{ cena }}">
+            <input type="hidden" name="data_rozpoczecia" value="{{ data_rozpoczecia }}">
+            <input type="hidden" name="data_konca" value="{{ data_konca }}">
+            <h5 class="card-title text-primary">Nadchodzące zajęcia</h5>
+            <form action="lista_uczestnikow_zajec" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="table-responsive ">
+                <table class="table table-striped table-dark  align-middle text-center">
+                    <thead>
+                        <tr class="align-middle">
+                            <th scope="col">Nazwa zajęć</th>
+                            <th scope="col">Opis zajęć</th>
+                            <th scope="col">Data zajęć</th>
+                            <th scope="col">Godzina zajęć</th>
+                            <th scope="col">Czas trwania (w min.)</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for zajecia in lista_zajec %}
+                            <tr>
+                                <th scope="row">{{ zajecia[0] }}</th>
+                                <td>{{ zajecia[1] }}</td>
+                                <td>{{ zajecia[2] }}</td>
+                                <td>{{ zajecia[3] }}</td>
+                                <td>{{ zajecia[4] }}</td>
+                                <td><button class="btn btn-primary listaBtn" data-id="{{zajecia[5]}}">Lista uczestników</button></td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" name="id_zajec_do_listowania" id="zajecia_do_listowania" />
+
+          </form>
+            <!-- Dodaj ten fragment dla paginacji -->
+            <div class="pagination justify-content-center">
+              <ul class="pagination">
+                  {% if pagination.has_prev %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('profil_trenera', page=pagination.prev_num) }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+                  
+                  {% for page_num in pagination.pages %}
+                      {% if page_num == pagination.page %}
+                          <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                      {% else %}
+                          <li class="page-item"><a class="page-link" href="{{ url_for('profil_trenera', page=page_num) }}">{{ page_num }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                  
+                  {% if pagination.has_next %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('profil_trenera', page=pagination.next_num) }}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+          
+        </div>
+    </div>
+</div>
+<script>
+  function validateNumberInput(input) {
+      // Usuń wszystkie znaki, które nie są cyframi
+      input.value = input.value.replace(/\D/g, '');
+  }
+
+  document.querySelectorAll('.listaBtn').forEach(function(button) {
+      button.addEventListener('click', function() {
+          var id = button.getAttribute('data-id');
+          
+          document.getElementById('zajecia_do_listowania').value = id;
+          
+          document.getElementById('zapisForm').submit();
+      });
+  });
+</script>
+
+
+{%endblock%}

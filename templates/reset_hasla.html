@@ -1,0 +1,20 @@
+{%extends "base.html"%}
+{%block content%}
+<div class="row justify-content-around" style="margin-top:24px">
+  <div class="card card3 text-white bg-dark mb-3  col  col-xxl-4 col-12 " style="">  
+      <div class="card-body ">
+        <h5 class="card-title text-primary">Resetowanie hasła</h5>
+            <hr class="bg-light">
+            <p class="text-success">{{msgSuccess}}</p>
+        <form method="post" action="{{ url_for('reset_hasla') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <label for="email" class="mb-2" >Email:</label>
+          <input type="email" name="email"  class="form-control form-control-lg bg-secondary" required></br>
+          <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary p-3 mb-3 mx-auto">Wyślij link resetujący</button>
+          </div>
+        </form>
+      </div>
+  </div>
+  </div>
+{%endblock%}

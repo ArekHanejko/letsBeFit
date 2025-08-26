@@ -1,0 +1,140 @@
+{%extends "base.html"%}
+{%block content%}
+
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+          <h5 class="card-title text-primary mt-2">Sprzedaż karnetu</h5>
+          <hr class="bg-light">
+          
+          {%if msgSuccess %}<p class="text-success">{{msgSuccess}}</p>{%endif%}
+            <div class=" ">
+              <form action="/recepcja_zapisz_karnet" method="POST"  id="zapisForm" >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <p>Filtr</p>
+                <input type="text" id="target" class="mb-2 form-control form-control-lg bg-secondary" />
+                <p>Klient (ID, Imię, Nazwisko, Email):</p> 
+              <select class="form-select bg-secondary text-light " name="obslugiwany_uzytkownik">
+                {%for uzytkownik in uzytkownicy_lista%}
+                <option data-obslugiwany="{{uzytkownik[0]}}{{uzytkownik[1]}}{{uzytkownik[2]}}{{uzytkownik[3]}}" class="obslugiwany-option" value="{{uzytkownik[0]}}"><span>#{{uzytkownik[0]}} {{uzytkownik[1]}} {{uzytkownik[2]}} {{uzytkownik[3]}}</span></option>
+                {%endfor%}
+              </select>
+
+                <div class="row justify-content-around" style="margin-top:24px">
+                  <input type="radio" class="inpcard inpcardN" id="normal" name="ticketType" value="NORMAL" checked="checked">
+                  <div class="card card3 text-white bg-dark mb-3  col  col-xxl-4 col-12 " style=""><label for="normal">
+                      <div class="card-header bg-success mt-2 text-dark fw-bold text-center"><label for="one">Normal</div>
+                      <div class="card-body">
+                          <h5 class="card-title">Długość karnetu: 1 miesiąc</h5>
+                      </div>
+                    </label>
+                    <p class="mt-auto text-center text-success n fw-bold h4 mb-4">Cena: {{normal}} zł</p>
+                  </div>
+                
+                  <input type="radio" class="inpcard inpcardP" id="pro" name="ticketType" value="PRO">
+                  <div class="card card3 text-white bg-dark mb-3 col   col-xxl-4 col-12 " style=""><label for="pro">
+                      <div class="card-header bg-warning mt-2 text-dark fw-bold text-center">Pro</div>
+                      <div class="card-body">
+                          <h5 class="card-title">Długość karnetu: 3 miesiące</h5>
+                      </div>
+                    </label>
+                    <p class="mt-auto text-center text-warning fw-bold h4 mb-4">Cena: {{pro}} zł</p>
+                  </div>
+                
+                  <input type="radio" class="inpcard inpcardM" id="max" name="ticketType" value="MAX">
+                  <div class="card card3 text-white bg-dark mb-3 col   col-xxl-4 col-12 " style=""><label for="max">
+                      <div class="card-header bg-danger mt-2 text-dark fw-bold text-center">Max</div>
+                      <div class="card-body">
+                          <h5 class="card-title">Długość karnetu: 6 miesięcy</h5>
+
+                      </div>
+                    </label>
+                    <p class="mt-auto text-center text-danger fw-bold h4 mb-4">Cena: {{max}} zł</p>
+                  </div>
+                </div>
+
+
+                <div class="text-center mx-auto bg-dark card mb-5 mt-5" style="max-width: 400px;opacity:0.95;">
+                  <!-- <button type="submit" value="Zapłać">dasda</button> -->
+                  <button type="submit" class="btn btn-primary p-3">Podaj datę aktywacji karnetu i dodaj karnet</button>
+                  <input type="date" id="inputDate" name="inputDate" class="bg-dark border-0 text-light p-3" required>
+                  <input type="string" id="inputEndDate" name="inputEndDate" style="display:none;">
+                <div id="outputDate" class="text-light p-3">Wybierz datę i rodzaj karnetu.</div>
+                </div>
+                
+                
+
+            </form>
+            </div>
+
+           
+            
+        </div>
+    </div>
+</div>
+
+
+<script>
+  
+  document.getElementById("inputDate").addEventListener("input", updateDate);
+  var ticketTypeElements = document.getElementsByName("ticketType");
+  
+  for (var i = 0; i < ticketTypeElements.length; i++) {
+      ticketTypeElements[i].addEventListener("change", updateDate);
+  }
+  
+  function updateDate() {
+      var selectedDate = document.getElementById("inputDate").value;
+      var selectedTicketType;
+  
+      for (var i = 0; i < ticketTypeElements.length; i++) {
+          if (ticketTypeElements[i].checked) {
+              selectedTicketType = ticketTypeElements[i].value;
+              break;
+          }
+      }
+  
+      var outputDateElement = document.getElementById("outputDate");
+  
+      if (selectedDate && selectedTicketType) {
+          var newDate;
+  
+          if (selectedTicketType == "NORMAL") {
+              newDate = new Date(selectedDate);
+              newDate.setMonth(newDate.getMonth() + 1);
+          } else if (selectedTicketType == "PRO") {
+              newDate = new Date(selectedDate);
+              newDate.setMonth(newDate.getMonth() + 3);
+          } else if (selectedTicketType == "MAX") {
+              newDate = new Date(selectedDate);
+              newDate.setMonth(newDate.getMonth() + 6);
+          }
+  
+          var formattedDate = newDate.toLocaleDateString();
+          outputDateElement.textContent = "Data wygaśnięcia karnetu: " + formattedDate;
+          document.getElementById("inputEndDate").setAttribute('value',newDate.toISOString().slice(0, 10));
+      } else {
+          outputDateElement.textContent = "Wybierz datę i rodzaj karnetu.";
+      }
+  }
+
+
+  document.getElementById('target').addEventListener('input', function() {
+      var inputText = this.value.toLowerCase();
+      var options = document.getElementsByClassName('obslugiwany-option');
+
+      for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+            options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].style.display !== 'none') {
+                options[i].selected = true;
+                break;
+            }
+        }
+  });
+
+  </script>
+{%endblock%}

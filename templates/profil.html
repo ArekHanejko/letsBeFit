@@ -1,0 +1,84 @@
+{%extends "base.html"%}
+{%block content%}
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+            <h5 class="card-title text-primary">Profil użytkownika</h5>
+            <hr class="bg-light">
+            <p class="card-text">
+                Status karnetu: {% if status_karnetu=="aktywny" %}<b class="text-success">Aktywny</b>{% endif %}
+                {% if status_karnetu=="nieaktywny" %}<b class="text-danger">Nieaktywny</b>{% endif %}</br>
+                Imię: {{ imie }}</br>
+                Nazwisko: {{ nazwisko }}</br>
+                E-mail (login): {{ login }}</br>
+                Nr telefonu: {{ nr_tel }}</br>
+                Płeć: {{ plec }}</br>
+                Data dołączenia: {{ data_dolaczenia }}</br>
+            </p>
+            <input type="hidden" name="imie" value="{{ imie }}">
+            <input type="hidden" name="nazwisko" value="{{ nazwisko }}">
+            <input type="hidden" name="typ_karnetu" value="{{ typ_karnetu }}">
+            <input type="hidden" name="cena" value="{{ cena }}">
+            <input type="hidden" name="data_rozpoczecia" value="{{ data_rozpoczecia }}">
+            <input type="hidden" name="data_konca" value="{{ data_konca }}">
+            <h5 class="card-title text-primary">Historia zakupionych karnetów</h5>
+            
+            <div class="table-responsive ">
+                <table class="table table-striped table-dark ">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID karnetu</th>
+                            <th scope="col">Typ karnetu</th>
+                            <th scope="col">Wartość</th>
+                            <th scope="col">Data zakupu</th>
+                            <th scope="col">Data aktywacji</th>
+                            <th scope="col">Data wygaśnięcia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in ticket_list %}
+                            <tr>
+                                <th scope="row">{{ ticket[0] }}{% if ticket[0] in karnety_ids %}<span class="text-success"> (aktywny)</span>{% endif %}</th>
+                                <td>{{ ticket[1] }}</td>
+                                <td>{{ ticket[2] }}</td>
+                                <td>{{ ticket[3] }}</td>
+                                <td>{{ ticket[4] }}</td>
+                                <td>{{ ticket[5] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination justify-content-center">
+              <ul class="pagination">
+                  {% if pagination.has_prev %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('profil', page=pagination.prev_num) }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+                  
+                  {% for page_num in pagination.pages %}
+                      {% if page_num == pagination.page %}
+                          <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                      {% else %}
+                          <li class="page-item"><a class="page-link" href="{{ url_for('profil', page=page_num) }}">{{ page_num }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                  
+                  {% if pagination.has_next %}
+                      <li class="page-item">
+                          <a class="page-link" href="{{ url_for('profil', page=pagination.next_num) }}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+          
+        </div>
+    </div>
+</div>
+{%endblock%}

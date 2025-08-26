@@ -1,0 +1,43 @@
+{%extends "base.html"%}
+{%block content%}
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+            <h5 class="card-title text-primary">Lista uczestnikow zajęc</h5>
+            <hr class="bg-light">
+            <p class="card-text">
+                Nazwa zajęć: {{ dane_o_zajeciach[0][0] }}</br>
+                Data zajęć: {{ dane_o_zajeciach[0][3] }}</br>
+                Godzina rozpoczęcia: {{ dane_o_zajeciach[0][1] }}</br>
+                Czas trwania (w min): {{ dane_o_zajeciach[0][2] }}</br>
+                Maksymalna liczba uczestników: {{ dane_o_zajeciach[0][4] }}</br>
+                
+            </p>
+            
+            <div class="table-responsive ">
+                <table class="table table-striped table-dark ">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID uczestnika</th>
+                            <th scope="col">Imię</th>
+                            <th scope="col">Nazwisko</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for uczestnik in lista_uczestnikow %}
+                            <tr>
+                                <th >{{ uczestnik[0] }}</th>
+                                <td>{{ uczestnik[1] }}</td>
+                                <td>{{ uczestnik[2] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+          
+          
+        </div>
+    </div>
+</div>
+{%endblock%}

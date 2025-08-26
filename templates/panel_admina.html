@@ -1,0 +1,135 @@
+{%extends "base.html"%}
+{%block content%}
+
+
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cardp text-white bg-dark mb-3" style="">
+        <div class="card-body">
+            <h5 class="card-title text-primary">Panel admina</h5>
+            <span class="text-success">{{msg}}{{msgSuccess}}</span>
+            <span class="text-warning">{{msgWarning}}</span>
+            <hr class="bg-light">
+            <!-- <p class="card-text">
+                Status karnetu: {% if status_karnetu=="aktywny" %}<b class="text-success">Aktywny</b>{% endif %}
+                {% if status_karnetu=="nieaktywny" %}<b class="text-danger">Nieaktywny</b>{% endif %}</br>
+                Imię: {{ imie }}</br>
+                Nazwisko: {{ nazwisko }}</br>
+                E-mail (login): {{ login }}</br>
+                Nr telefonu: {{ nr_tel }}</br>
+                Płeć: {{ plec }}</br>
+                Data dołączenia: {{ data_dolaczenia }}</br>
+            </p>
+            <input type="hidden" name="imie" value="{{ imie }}">
+            <input type="hidden" name="nazwisko" value="{{ nazwisko }}">
+            <input type="hidden" name="typ_karnetu" value="{{ typ_karnetu }}">
+            <input type="hidden" name="cena" value="{{ cena }}">
+            <input type="hidden" name="data_rozpoczecia" value="{{ data_rozpoczecia }}">
+            <input type="hidden" name="data_konca" value="{{ data_konca }}"> -->
+            
+            <div class="container m-0 " style="max-width:none;">
+              <div class="row">
+                <div class="col-lg-6 col-12 ">
+                  <h6 class="card-title text-primary mt-5 mt-lg-0">Zmiana cen karnetów</h5>
+                  <hr class="bg-light">
+                  <form class="rejlog" action="zmien_ceny" method="POST" >
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    Cena karnetu <span class="text-danger">MAX</span>: <input type="number" name="nowa_cena_max" value="{{ max }}"  class="form-control form-control-lg bg-secondary" required/>
+                    Cena karnetu <span class="text-warning">PRO</span>: <input type="number"  name="nowa_cena_pro" value="{{ pro }}"   class="form-control form-control-lg bg-secondary" required/>
+                    Cena karnetu <span class="text-success">NORMAL</span> :<input type="number"  name="nowa_cena_normal" value="{{ normal }}"   class="form-control form-control-lg bg-secondary" required/>
+                    <button type="submit" class="btn btn-primary btn-lg  mt-2">Zmień ceny</button>
+                  </form>
+              </div>
+                  <div class="col-lg-6 col-12 ">
+                      <h6 class="card-title text-primary mt-5 mt-lg-0">Nadawanie roli / bany</h5>
+                      <hr class="bg-light">
+                       <form class="rejlog" action="zmien_role" method="POST" >
+                        <!-- Id użytkownika: <input type="text" name="id_uzytkownika" oninput="validateNumberInput(this)" class="form-control form-control-lg bg-secondary" required/> -->
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <p>Filtr</p>
+                <input type="text" id="target" class="mb-2 form-control form-control-lg bg-secondary" />
+                <p>Klient (ID, Imię, Nazwisko, Email):</p> 
+              <select class="form-select bg-secondary text-dark" name="id_uzytkownika">
+                {%for uzytkownik in uzytkownicy_lista%}
+                <option data-obslugiwany="{{uzytkownik[0]}}{{uzytkownik[1]}}{{uzytkownik[2]}}{{uzytkownik[3]}}" class="obslugiwany-option" value="{{uzytkownik[0]}}"><span>#{{uzytkownik[0]}} {{uzytkownik[1]}} {{uzytkownik[2]}} {{uzytkownik[3]}}</span></option>
+                {%endfor%}
+              </select>
+
+                        <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+  
+                          <h6 class="mb-0 me-4">Rola: </h6>
+        
+                          <div class="form-check form-check-inline mb-0 me-4">
+                            <input class="form-check-input" type="radio" name="rola" id="rolaUzytkownik"
+                              value="uzytkownik" checked/>
+                            <label class="form-check-label" for="rolaUzytkownik">Zwykły użytkownik</label>
+                          </div>
+        
+                          <div class="form-check form-check-inline mb-0 me-4">
+                            <input class="form-check-input" type="radio" name="rola" id="rolaTrener"
+                              value="trener" />
+                            <label class="form-check-label" for="rolaTrener">Trener</label>
+                          </div>
+
+                          <div class="form-check form-check-inline mb-0 me-4">
+                            <input class="form-check-input" type="radio" name="rola" id="rolaAdmin"
+                              value="admin" />
+                            <label class="form-check-label" for="rolaAdmin" >Admin</label>
+                          </div>
+
+                          <div class="form-check form-check-inline mb-0 me-4">
+                            <input class="form-check-input" type="radio" name="rola" id="rolaRecepcjonista"
+                              value="recepcjonista" />
+                            <label class="form-check-label" for="rolaRecepcjonista" >Recepcjonista</label>
+                          </div>
+
+                          <div class="form-check form-check-inline mb-0 me-4">
+                            <input class="form-check-input" type="radio" name="rola" id="rolaBan"
+                              value="ban" />
+                            <label class="form-check-label text-danger fw-bold" for="rolaBan" >BAN</label>
+                          </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg  mt-2">Zmień rolę</button>
+                      </form>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-12 ">
+                  
+
+
+                </div>
+              </div>
+          </div>
+
+            
+          
+        </div>
+    </div>
+</div>
+<script>
+function validateNumberInput(input) {
+  input.value = input.value.replace(/\D/g, '');
+}
+
+document.getElementById('target').addEventListener('input', function() {
+      var inputText = this.value.toLowerCase();
+      var options = document.getElementsByClassName('obslugiwany-option');
+
+      for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+            options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].style.display !== 'none') {
+                options[i].selected = true;
+                break;
+            }
+        }
+  });
+
+</script>
+
+{%endblock%}

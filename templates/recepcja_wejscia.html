@@ -1,0 +1,58 @@
+{%extends "base.html"%}
+{%block content%}
+
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card card3 text-white bg-dark mb-3  col  col-xxl-4 col-12" style="">
+        <div class="card-body">
+          <h5 class="card-title text-primary mt-2">Recepcja - wejścia</h5>
+          <hr class="bg-light">
+          
+          {%if msgSuccess %}<p class="text-success">{{msgSuccess}}</p>{%endif%}
+          {%if msgWarning %}<p class="text-warning">{{msgWarning}}</p>{%endif%}
+
+          <div class=" ">
+              <form action="/recepcja_wejscia_sprawdz" method="POST"  id="zapisForm" >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <p>Filtr</p>
+                  <input type="text" id="target" class="mb-2 form-control form-control-lg bg-secondary" />
+                  <p>Klient (ID, Imię, Nazwisko, Email):</p> 
+                <select class="form-select bg-secondary text-light " name="obslugiwany_uzytkownik">
+                  {%for uzytkownik in uzytkownicy_lista%}
+                  <option data-obslugiwany="{{uzytkownik[0]}}{{uzytkownik[1]}}{{uzytkownik[2]}}{{uzytkownik[3]}}" class="obslugiwany-option" value="{{uzytkownik[0]}}"><span>#{{uzytkownik[0]}} {{uzytkownik[1]}} {{uzytkownik[2]}} {{uzytkownik[3]}}</span></option>
+                  {%endfor%}
+                </select>
+
+                <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary p-3 mt-5">Wpisz na listę wejściową</button>
+                </div>
+
+            </form>
+            </div>
+
+           
+           
+            
+        </div>
+    </div>
+</div>
+
+<script>
+  document.getElementById('target').addEventListener('input', function() {
+      var inputText = this.value.toLowerCase();
+      var options = document.getElementsByClassName('obslugiwany-option');
+
+      for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+            options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].style.display !== 'none') {
+                options[i].selected = true;
+                break;
+            }
+        }
+  });
+</script>
+
+{%endblock%}

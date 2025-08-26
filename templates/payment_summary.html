@@ -1,0 +1,57 @@
+
+{%extends "base.html"%}
+{%block content%}
+
+  {%if session['rola']=='recepcjonista'%}<form id="zapisForm" action="/recepcja_zapisz_na_zajecia" method="POST">{%else%}<form id="zapisForm" action="/pay" method="POST">{%endif%}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <div class="row justify-content-around" style="margin-top:24px">
+  <div class="card card3 text-white bg-dark mb-3  col  col-xxl-4 col-12 " style="">
+    {% if typ_karnetu=="NORMAL" %}<div class="card-header bg-success mt-2 text-dark fw-bold text-center"><label for="one">Zakup Karnetu w wersji NORMAL</div>{% endif %}
+    {% if typ_karnetu=="PRO" %}<div class="card-header bg-warning mt-2 text-dark fw-bold text-center"><label for="one">Zakup Karnetu w wersji PRO</div>{% endif %}
+    {% if typ_karnetu=="MAX" %}<div class="card-header bg-danger mt-2 text-dark fw-bold text-center"><label for="one">Zakup Karnetu w wersji MAX</div>{% endif %}
+        
+      <div class="card-body">
+          <h5 class="card-title">Dane zakupu:</h5>
+          <p class="card-text">
+              Imię: {{imie}}</br>
+              Nazwisko: {{nazwisko}}</br>
+              {% if zakup=="karnet" %}   Kupowana usługa: Karnet {{typ_karnetu}}</br> {% endif %}
+              {% if zakup=="zajecia" %}   Kupowana usługa: Zajęcia z trenerem</br> {% endif %}
+              Cena: {{wartosc}}{{cena}} zł
+
+
+          </p>
+          
+      <input type="hidden" name="typ_karnetu" value="{{ typ_karnetu }}">
+      <input type="hidden" name="cena" value="{{ cena }}">
+      <input type="hidden" name="data_rozpoczecia" value="{{ data_rozpoczecia }}">
+      <input type="hidden" name="data_konca" value="{{ data_konca }}">
+
+      <input type="hidden" name="id_zajec" value="{{ id_zajec }}">
+
+      <input type="hidden" name="cena_zajec" value="{{ wartosc }}">
+      
+
+
+      <input type="hidden" name="nazwa_zajec" value="{{ kupiony_produkt }}">
+      {% if zakup=="karnet" %}   <input type="hidden" name="zakup" value="karnet"> {% endif %}
+      {% if zakup=="zajecia" %}   <input type="hidden" name="zakup" value="zajecia"> {%if session['rola']=='recepcjonista'%} <input type="hidden" name="obslugiwany_uzytkownik" value="{{login}}">{%endif%}{% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary p-3 mb-3 statBtn" status-oplacenia="oplacony">{%if session['rola']=='recepcjonista'%}Klient zapłacił{%else%}Płacę{%endif%}</button>
+      {%if session['rola']=='recepcjonista'%}<input type="hidden" name="status_oplacenia" id="stat_opl" ><button type="submit" class="statBtn btn btn-secondary p-3 mb-3"  status-oplacenia="nieoplacony">Anuluj zapis</button>{%endif%}
+  </div>
+  </div>
+</form>
+<script>
+
+document.querySelectorAll('.statBtn').forEach(function(button) {
+      button.addEventListener('click', function() {
+          var status_oplacenia = button.getAttribute('status-oplacenia');
+         
+          document.getElementById('stat_opl').value = status_oplacenia;
+         
+          document.getElementById('zapisForm').submit();
+      });
+  });
+</script>
+{%endblock%}

@@ -1,0 +1,24 @@
+{%extends "base.html"%}
+{%block content%}
+
+<div class="row justify-content-around" style="margin-top:24px">
+  <div class="card card3 text-white bg-dark mb-3  col  col-xxl-4 col-12 " style="">  
+      <div class="card-body ">
+        <h5 class="card-title text-primary">Zmiana hasła na nowe</h5>
+            <hr class="bg-light">
+        <form method="post" action="{{ url_for('reset_hasla_potwierdzenie', token=token) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <!-- Pozostałe pola formularza -->
+          {{msg}}
+          <label for="nowe_haslo">Nowe hasło:</label>
+          <input type="password" id="nowe_haslo" name="nowe_haslo" class="form-control form-control-lg bg-secondary" required>
+          <label for="nowe_haslo2">Powtórz hasło:</label>
+          <input type="password" id="nowe_haslo2" name="nowe_haslo2" class="form-control form-control-lg bg-secondary" required></br>
+          <div class="d-flex justify-content-center">
+          <input type="submit" class="btn btn-primary p-3 mb-3 mx-auto" value="Zresetuj hasło">
+          </div>
+        </form>
+      </div>
+  </div>
+  </div>
+{%endblock%}

@@ -1,0 +1,167 @@
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 1.55;
+    padding-left: .75em;
+    padding-right: .75em;
+    }
+    .card-registration .select-arrow {
+    top: 13px;
+    }
+.navbar-brand{
+
+    color:#007bff/*##ffc107*/;
+}
+
+
+.bgreg{
+    background-color: black;
+    
+}
+.form-control{
+
+    color:white;
+    background-color: #262626;
+    border:none;
+}
+
+.form-control:focus {
+    background-color: rgb(161, 204, 253);
+  }
+body{
+    /*background-color: #262626;*/
+    background-image: url("bg1.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    min-height: 100%;
+}
+html{
+    margin:0px;
+    padding:0px;
+    min-height: 100%;
+}
+section{
+    background: none !important;
+}
+
+.d-none > input + .card{ /* DIV STYLES */
+    cursor:pointer;
+    border:2px solid transparent;
+}
+
+
+
+.inpcard {display: none;}
+.inpcard label {display: block;}
+
+.inpcard + .card  {
+  background: orange;
+}
+
+.inpcard + .card  label {
+  
+  cursor: pointer;
+}
+
+.inpcardN:checked + .card {
+
+  box-shadow: #5cb85c 0px 0px 0px 2px, #5cb85c 0px 18px 26px -1px, #5cb85c 0px 1px 0px inset;
+  transition-duration:1s;
+  
+}
+.inpcardN:checked + label{
+color:#5cb85c;
+
+}
+
+.inpcardP:checked + .card {
+
+    box-shadow: #f0ad4e 0px 0px 0px 2px, #f0ad4e 0px 18px 26px -1px, #f0ad4e 0px 1px 0px inset;
+    transition-duration:1s;
+    
+  }
+  .inpcardP:checked + label{
+  color:#f0ad4e;
+  
+  }
+
+  .inpcardM:checked + .card {
+
+  box-shadow: #d9534f 0px 0px 0px 2px, #d9534f 0px 18px 26px -1px, #d9534f 0px 1px 0px inset;
+  transition-duration:1s;
+  
+}
+.inpcardM:checked + label{
+color:#d9534f;
+
+}
+.card3{
+    opacity:0.95;
+    margin-top:25px;
+}
+.cardp{
+    opacity:0.95;
+    margin-top:25px;
+    width:90%;
+}
+.cards{
+  opacity:0.95;
+  margin-top:25px;
+  width:70%;
+}
+@media only screen and (min-width: 1400px) {
+    .card3{
+
+        width:30%;
+    }
+    body{
+        min-height: 100%;
+    }
+  }
+  @media (max-width: 1080px) {
+    #carouselExample {
+        width: 100%; /* Wypełnij szerokość ekranu na małych ekranach */
+
+        
+    }
+}
+  @media(min-width: 1081px){
+  #carouselExample {
+    width: 85%;
+    margin: auto; /* Wyśrodkuj karuzelę */
+  }
+}
+.carousel-inner{
+
+  border-radius: 50px;
+}
+.nav-item{
+  padding:15px;
+}
+.dropdown-menu{
+  width:100%;
+}
+@media (max-width: 1080px) {
+  .nav-item {
+      padding:5px;
+      height: 150%;
+  }
+  .dropdown-item{
+    padding-top:10px;
+    padding-bottom: 10px;
+  }
+  .container-fluid{
+    padding-top:15px;
+    padding-bottom: 15px;
+    
+  }
+}
+html, body {
+overflow-x: hidden;
+} 
+body{
+ 
+}
+input{
+  color: #212529 !important;
+}

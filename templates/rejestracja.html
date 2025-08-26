@@ -1,0 +1,97 @@
+{%extends "base.html"%}
+{%block content%}
+
+<form  class="rejlog" action="rejestracja" method="POST" >
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <!-- <a href="https://www.freepik.com/free-photo/full-body-portrait-athletic-shirtless-male-doing-biceps-workouts-with-dumbbells-gym-club_24475957.htm#query=gym&position=9&from_view=keyword&track=sph">Image by fxquadro</a> on Freepik -->
+  <section class="h-100 " style="background-color: #262626;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+          <div class="card card-registration my-4"style="border:none;">
+            <div class="row g-0" >
+              <div class="col-xl-6 d-none d-xl-block ">
+                <img src="static/img1.jpg"
+                  alt="Sample photo" class="img-fluid "
+                  style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;height:100%;" />
+              </div>
+              <div class="bgreg col-xl-6 bg-dark">
+                <div class="card-body p-md-5 text-white">
+                  <h3 class="mb-5 text-uppercase">Rejestracja</h3>
+                  {{msg}}
+                  <hr class="bg-light">
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="imie" name="imie" class="form-control form-control-lg bg-secondary" required/>
+                        <label class="form-label" for="imie">Imię</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="nazwisko"  name="nazwisko" class="form-control form-control-lg bg-secondary" required/>
+                        <label class="form-label" for="nazwisko">Nazwisko</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="form-outline mb-4">
+                    <input type="text" id="nrtel"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" maxlength="9" minlength="9" name="nr_tel" class="form-control form-control-lg  bg-secondary" required/>
+                    <label class="form-label" for="nrtel">Numer telefonu</label>
+                  </div>
+  
+                  <div class="form-outline mb-4">
+                    <input type="email" id="email" name="login"  class="form-control form-control-lg bg-secondary" required/>
+                    <label class="form-label" for="email">Adres e-mail</label>
+                  </div>
+  
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="password" id="haslo" name="haslo" class="form-control form-control-lg bg-secondary" required/>
+                        <label class="form-label" for="haslo">Hasło</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="password" id="form3Example1n" name="haslo2"  class="form-control form-control-lg bg-secondary" required/>
+                        <label class="form-label" for="form3Example1n">Powtórz hasło</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+  
+                    <h6 class="mb-0 me-4">Płeć: </h6>
+  
+                    <div class="form-check form-check-inline mb-0 me-4">
+                      <input class="form-check-input" type="radio" name="plec" id="femaleGender"
+                        value="Kobieta" />
+                      <label class="form-check-label" for="femaleGender">Kobieta</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline mb-0 me-4">
+                      <input class="form-check-input" type="radio" name="plec" id="maleGender"
+                        value="Mężczyzna" checked />
+                      <label class="form-check-label" for="maleGender">Mężczyzna</label>
+                    </div>
+  
+                  </div>
+                  <p>Masz już konto? <a href="/logowanie">Zajolugj się</a></p>
+
+                  <div class="d-flex justify-content-end pt-3">
+                    <button type="reset" class="btn btn-light btn-lg">Wyczyść</button>
+                    <button type="submit" class="btn btn-primary btn-lg ms-2">Zarejestruj się</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{msg}}
+  </section>
+</form>
+{%endblock%}

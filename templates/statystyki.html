@@ -1,0 +1,53 @@
+{%extends "base.html"%}
+{%block content%} 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div class="row justify-content-around" style="margin-top:12px">
+    <div class="card cards text-white bg-dark mb-3 col-12" >
+        <div class="card-body">
+          <h3 class="card-title text-primary mt-5 mt-lg-0">Ruch na siłowni</h5>
+            <hr class="bg-light">
+            <p>Na tym histogramie możesz sprawdzić natężenie liczby użytkowników naszej siłowni w konkretnych godzinach.</p>
+            <canvas id="histogram" width="400" height="200"></canvas>
+          
+          
+        </div>
+    </div>
+</div>
+
+<script>
+   
+    var godziny = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00", "21:00", "22:00", "23:00", "24:00"];
+    var czestotliwosc = [
+  "{{ res[0][1] }}", "{{ res[1][1] }}", "{{ res[2][1] }}", "{{ res[3][1] }}", "{{ res[4][1] }}", "{{ res[5][1] }}", "{{ res[6][1] }}", "{{ res[7][1] }}", "{{ res[8][1] }}", "{{ res[9][1] }}",
+  "{{ res[10][1] }}", "{{ res[11][1] }}", "{{ res[12][1] }}", "{{ res[13][1] }}", "{{ res[14][1] }}", "{{ res[15][1] }}", "{{ res[16][1] }}", "{{ res[17][1] }}", "{{ res[18][1] }}", "{{ res[19][1] }}",
+  "{{ res[20][1] }}", "{{ res[21][1] }}", "{{ res[22][1] }}", "{{ res[23][1] }}"
+]; 
+
+    var ctx = document.getElementById('histogram').getContext('2d');
+  
+  
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: godziny,
+        datasets: [{
+          label: 'Ruch na siłowni w zależności od godziny',
+          data: czestotliwosc,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)', 
+          borderColor: 'rgba(75, 192, 192, 1)', 
+          borderWidth: 1 
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...czestotliwosc)*1.5,
+            display: false
+          }
+        }
+      }
+    });
+  </script>
+  
+{%endblock%}
