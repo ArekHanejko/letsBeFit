@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from flask_mail import Message
 import hashlib
 import random
@@ -161,7 +161,7 @@ def reset_hasla_potwierdzenie(token):
 			nowe_haslo_hash = hashlib.sha256(nowe_haslo.encode('utf-8')).hexdigest()
 			dbConnection = dbConnect()
 			dbCursor = dbConnection.cursor()
-			dbCursor.execute("UPDATE uzytkownicy SET haslo = %s WHERE login ='arekimmobile@gmail.com'",(nowe_haslo_hash,))# %s", (nowe_haslo_hash, email))
+			dbCursor.execute("UPDATE uzytkownicy SET haslo = %s WHERE login = %s", (nowe_haslo_hash, email))
 			dbConnection.commit()
 			msg= 'Hasło zostało zresetowane. Możesz się teraz zalogować.'
 			return redirect(url_for('auth.logowanie_action'))
