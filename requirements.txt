@@ -1,0 +1,9 @@
+flask
+flask_session
+psycopg2-binary
+paypalrestsdk
+flask-paginate
+flask-mail
+itsdangerous
+flask-wtf
+python-dotenv
