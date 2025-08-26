@@ -6,7 +6,7 @@
       <div class="card-body ">
         <h5 class="card-title text-primary">Zmiana hasła na nowe</h5>
             <hr class="bg-light">
-        <form method="post" action="{{ url_for('reset_hasla_potwierdzenie', token=token) }}">
+        <form method="post" action="{{ url_for('auth.reset_hasla_potwierdzenie', token=token) }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <!-- Pozostałe pola formularza -->
           {{msg}}

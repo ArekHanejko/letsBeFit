@@ -6,7 +6,7 @@
         <h5 class="card-title text-primary">Resetowanie hasła</h5>
             <hr class="bg-light">
             <p class="text-success">{{msgSuccess}}</p>
-        <form method="post" action="{{ url_for('reset_hasla') }}">
+        <form method="post" action="{{ url_for('auth.reset_hasla') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <label for="email" class="mb-2" >Email:</label>
           <input type="email" name="email"  class="form-control form-control-lg bg-secondary" required></br>

@@ -5,12 +5,23 @@
   <div class="row justify-content-around" style="margin-top:12px">
     <div class="card cardp text-white bg-dark mb-3" style="">
         <div class="card-body">
-          <h5 class="card-title text-primary mt-2">Nadchodzące zajęcia</h5>
+          <h5 class="card-title text-primary mt-2">Zapis na zajęcia</h5>
           <hr class="bg-light">
-          {% if msg%}<h3 class="text-success">{{msg}}</h3> {%endif %}
+          
+          {%if msgWarning %}<p class="text-warning">{{msgWarning}}</p>{%endif%}
+          {%if msgSuccess %}<p class="text-success">{{msgSuccess}}</p>{%endif%}
             <div class="table-responsive ">
               <form action="/payment_summary" method="POST"  id="zapisForm" >
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <p>Filtr</p>
+                  <input type="text" id="target" class="mb-2 form-control form-control-lg bg-secondary" />
+                  <p>Klient (ID, Imię, Nazwisko, Email):</p> 
+                <select class="form-select bg-secondary text-light " name="obslugiwany_uzytkownik">
+                  {%for uzytkownik in uzytkownicy_lista%}
+                  <option data-obslugiwany="{{uzytkownik[0]}}{{uzytkownik[1]}}{{uzytkownik[2]}}{{uzytkownik[3]}}" class="obslugiwany-option" value="{{uzytkownik[3]}}"><span>#{{uzytkownik[0]}} {{uzytkownik[1]}} {{uzytkownik[2]}} {{uzytkownik[3]}}</span></option>
+                  {%endfor%}
+                </select>
+                
                 <table class="table table-striped table-dark align-middle text-center">
                     <thead>
                         <tr class="align-middle">
@@ -29,7 +40,7 @@
                         {% for zajecia in lista_zajec %}
                         
                             <tr>
-                                <th scope="row">{{ zajecia[0] }}{% if zajecia[10] in zajecia_zapisy_ids %}<span class="text-success"> (zapisano)</span>{% endif %}</th>
+                                <th scope="row">{{ zajecia[0] }}</th>
                                 <td class="text-justify">{{ zajecia[1] }}</td>
                                 <td>{{ zajecia[2] }}</td>
                                 <td>{{ zajecia[3] }}</td>
@@ -40,17 +51,13 @@
                                 {% elif 0.75 <= zajecia[11]|int / zajecia[6]|int < 1 %}<td class="text-warning">{{ zajecia[11] }}/{{zajecia[6]}}</td>
                                 {% elif zajecia[11]|int / zajecia[6]|int < 0.75 %}<td class="text-success">{{ zajecia[11] }}/{{zajecia[6]}}</td>{%endif%}
                                 <td>
-                                  {%if 'login' in session%}
-                                  {% if zajecia[10] in zajecia_zapisy_ids %}
-                                
-                                  <button type="button" class="btn btn-danger wypiszBtn" data-id="{{ zajecia[10] }}" data-cena="{{ zajecia[5] }}" data-nazwa="{{ zajecia[0] }}" style="width:150px;">
-                                    Wypisz się
-                                </button>
-                                  {% else %}
+
+                                  
+                                 
                                   
                                   {% if zajecia[11]|int < zajecia[6]|int %}
                                     <button type="button" class="btn btn-primary zapiszBtn" data-id="{{ zajecia[10] }}" data-cena="{{ zajecia[5] }}" data-nazwa="{{ zajecia[0] }}" style="width:150px;">
-                                        Zapisz się
+                                        Dodaj klienta
                                     </button>
                                    
                                     {%elif zajecia[11]|int >= zajecia[6]|int%}
@@ -59,11 +66,8 @@
                                   </button>
                                     {%endif%}
                                     <input type="hidden" name="zakup" value="zajecia" />
-                                    {% endif %}
-                                    {%else%}
-                                    <button type button class="btn btn-primary zalogujBtn" href="/logowanie">Zaloguj się aby dołączyć</button>
-                                    {%endif%}
-                                  </td>
+                                    
+                                </td>
                             </tr>
                          
                         {% endfor %}
@@ -73,6 +77,8 @@
                 <input type="hidden" name="id_zajec" id="zajeciaId" value="" />
                 <input type="hidden" name="cena_zajec" id="zajeciaCena" value="" />
                 <input type="hidden" name="nazwa_zajec" id="zajeciaNazwa" value="" />
+                <input type="hidden" name="obslugiwany_uzytkownik" id="uzytkownikObslugiwany" value="" />
+
             </form>
             </div>
 
@@ -81,7 +87,7 @@
               <ul class="pagination">
                   {% if pagination.has_prev %}
                       <li class="page-item">
-                          <a class="page-link" href="{{ url_for('zajecia', page=pagination.prev_num) }}" aria-label="Previous">
+                          <a class="page-link" href="{{ url_for('reception.zajecia_recepcja', page=pagination.prev_num) }}" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                           </a>
                       </li>
@@ -91,13 +97,13 @@
                       {% if page_num == pagination.page %}
                           <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
                       {% else %}
-                          <li class="page-item"><a class="page-link" href="{{ url_for('zajecia', page=page_num) }}">{{ page_num }}</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ url_for('reception.zajecia_recepcja', page=page_num) }}">{{ page_num }}</a></li>
                       {% endif %}
                   {% endfor %}
                   
                   {% if pagination.has_next %}
                       <li class="page-item">
-                          <a class="page-link" href="{{ url_for('zajecia', page=pagination.next_num) }}" aria-label="Next">
+                          <a class="page-link" href="{{ url_for('reception.zajecia_recepcja', page=pagination.next_num) }}" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                           </a>
                       </li>
@@ -109,50 +115,40 @@
 </div>
 
 <script>
-document.querySelectorAll('.zalogujBtn').forEach(function(button) {
-    button.addEventListener('click', function(event) {
-        event.preventDefault();
-        window.location.href = '/logowanie';
-
-       });
-});
-
   document.querySelectorAll('.zapiszBtn').forEach(function(button) {
       button.addEventListener('click', function() {
           var id = button.getAttribute('data-id');
           var cena = button.getAttribute('data-cena');
           var nazwa = button.getAttribute('data-nazwa');
+          var obslugiwany = button.getAttribute('data-obslugiwany');
+
           document.getElementById('zajeciaId').value = id;
           document.getElementById('zajeciaCena').value = cena;
           document.getElementById('zajeciaNazwa').value = nazwa;
+          document.getElementById('uzytkownikObslugiwany').value = obslugiwany;
           document.getElementById('zapisForm').submit();
       });
   });
 
 
-    document.querySelectorAll('.wypiszBtn').forEach(function(button) {
-    button.addEventListener('click', function() {
-      var id = button.getAttribute('data-id');
-      var cena = button.getAttribute('data-cena');
-      var nazwa = button.getAttribute('data-nazwa');
+  
+  document.getElementById('target').addEventListener('input', function() {
+      var inputText = this.value.toLowerCase();
+      var options = document.getElementsByClassName('obslugiwany-option');
 
-      // Ustawienie wartości pól formularza
-      document.getElementById('zajeciaId').value = id;
-      document.getElementById('zajeciaCena').value = cena;
-      document.getElementById('zajeciaNazwa').value = nazwa;
+      for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+            options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
+        }
 
-      // Wywołanie potwierdzenia przed wypisaniem się
-      var confirmation = confirm("Czy na pewno chcesz się wypisać z zajęć?");
-      
-      if (confirmation) {
-        // Zmiana akcji formularza
-        document.getElementById('zapisForm').action = '/odwolaj_zajecia';
-
-        // Ręczne wysłanie formularza do nowej akcji
-        document.getElementById('zapisForm').submit();
-      }
-    });
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].style.display !== 'none') {
+                options[i].selected = true;
+                break;
+            }
+        }
   });
+
 </script>
 
 {%endblock%}
