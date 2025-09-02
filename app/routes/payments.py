@@ -138,7 +138,7 @@ def payment_summary():
 			wartosc = request.form["cena_zajec"]
 			if session['rola']=='recepcjonista':
 				klient=request.form['obslugiwany_uzytkownik']
-				dbCursor.execute("SELECT id_klienta FROM uzytkownicy WHERE login = %s", (klient,))
+				dbCursor.execute("SELECT id_uzytkownika FROM uzytkownicy WHERE login = %s", (klient,))
 				res = dbCursor.fetchone()
 				res_id = res[0]
 				dbCursor.execute("insert into zajecia_zapisy values(DEFAULT,%s,%s,CURRENT_DATE)",(res_id, id_zajec,))
