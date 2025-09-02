@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from flask_paginate import Pagination, get_page_args
 from app.models.database import dbConnect, PER_PAGE
-
+import hashlib
 reception_bp = Blueprint('reception', __name__)
 
 @reception_bp.route('/recepcja_zmiana_hasla_klienta', methods = ['POST','GET'])
