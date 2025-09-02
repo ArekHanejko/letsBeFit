@@ -138,7 +138,7 @@ def payment_summary():
 			wartosc = request.form["cena_zajec"]
 			if session['rola']=='recepcjonista':
 				klient=request.form['obslugiwany_uzytkownik']
-				dbCursor.execute("insert into zajecia_zapisy values(DEFAULT,9999,%s,CURRENT_DATE)",(id_zajec,))
+				dbCursor.execute("insert into zajecia_zapisy values(DEFAULT,%s,%s,CURRENT_DATE)",(klient, id_zajec,))
 
 			#dbCursor.execute("insert into karnet_ceny values('xdd',{})".format(wartosc))
 
