@@ -164,7 +164,7 @@ def reset_hasla_potwierdzenie(token):
 			dbCursor.execute("UPDATE uzytkownicy SET haslo = %s WHERE login = %s", (nowe_haslo_hash, email))
 			dbConnection.commit()
 			msg= 'Hasło zostało zresetowane. Możesz się teraz zalogować.'
-			return redirect(url_for('auth.logowanie_action'))
+			return redirect(url_for('auth.logowanie_action', msg=msg))
 
 	return render_template('reset_hasla_potwierdzenie.html', token=token,email=email)
 
