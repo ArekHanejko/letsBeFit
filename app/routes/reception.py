@@ -173,7 +173,7 @@ def recepcja_wejscia():
 	dbConnection.close()
 	
 
-	return render_template("reception.recepcja_wejscia.html", uzytkownicy_lista=uzytkownicy_lista, msgSuccess=msgSuccess,msgWarning=msgWarning)
+	return render_template("recepcja_wejscia.html", uzytkownicy_lista=uzytkownicy_lista, msgSuccess=msgSuccess,msgWarning=msgWarning)
 @reception_bp.route('/recepcja_wejscia_sprawdz', methods = ['POST','GET'])
 def recepcja_wejscia_sprawdz():
 	if request.method=='POST':
