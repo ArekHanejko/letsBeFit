@@ -113,7 +113,7 @@ def confirm(token):
 	else:
 		msg='Błąd potwierdzenia rejestracji. Spróbuj ponownie lub skontaktuj się z administratorem.'
 	
-	return redirect(url_for('auth.index',msg=msg))
+	return redirect(url_for('admin.index',msg=msg))
 
 
 @auth_bp.route('/reset_hasla', methods=['GET', 'POST'])
