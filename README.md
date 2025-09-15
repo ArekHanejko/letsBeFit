@@ -1,4 +1,5 @@
 # LetsBeFit
+## Python + flask, JavaScript, bootstrap, PayPal SDK
 Aplikacja internetowa dla siłowni z autoryzacją opartą na rolach (użytkownik, trener, recepcjonista, administrator), obsługą płatności online i funkcjami zarządzania zajęciami, sprzedażą biletów oraz administracją cen i ról.
 Użytkownicy o różnych rolach mają dostęþ do różnych funkcji serwisu. Gotowe konta z przypisanymi rolami do testów:
 
