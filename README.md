@@ -6,10 +6,10 @@ Users with different roles have access to different features of the service. Pre
 
 Demo: https://letsbefit.onrender.com/
 
-Login: user@lbf.pl  
+Login: user@lbf.pl
 Password: zaq1@WSX
  
-Login: trainer@lbf.pl 
+Login: trainer@lbf.pl
 Password: zaq1@WSX
 
 Login: administrator@lbf.pl
