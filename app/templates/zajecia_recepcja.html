@@ -117,10 +117,10 @@
 <script>
   document.querySelectorAll('.zapiszBtn').forEach(function(button) {
       button.addEventListener('click', function() {
-          var id = button.getAttribute('data-id');
-          var cena = button.getAttribute('data-cena');
-          var nazwa = button.getAttribute('data-nazwa');
-          var obslugiwany = button.getAttribute('data-obslugiwany');
+          let id = button.getAttribute('data-id');
+          let cena = button.getAttribute('data-cena');
+          let nazwa = button.getAttribute('data-nazwa');
+          let obslugiwany = button.getAttribute('data-obslugiwany');
 
           document.getElementById('zajeciaId').value = id;
           document.getElementById('zajeciaCena').value = cena;
@@ -133,15 +133,15 @@
 
   
   document.getElementById('target').addEventListener('input', function() {
-      var inputText = this.value.toLowerCase();
-      var options = document.getElementsByClassName('obslugiwany-option');
+      let inputText = this.value.toLowerCase();
+      let options = document.getElementsByClassName('obslugiwany-option');
 
-      for (var i = 0; i < options.length; i++) {
-            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+      for (let i = 0; i < options.length; i++) {
+            let optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
             options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
         }
 
-        for (var i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             if (options[i].style.display !== 'none') {
                 options[i].selected = true;
                 break;
