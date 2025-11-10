@@ -120,7 +120,7 @@
 
   document.querySelectorAll('.listaBtn').forEach(function(button) {
       button.addEventListener('click', function() {
-          var id = button.getAttribute('data-id');
+          let id = button.getAttribute('data-id');
           
           document.getElementById('zajecia_do_listowania').value = id;
           
