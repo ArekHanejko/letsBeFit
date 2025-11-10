@@ -74,25 +74,25 @@
 document.getElementById("inputDate").addEventListener("input", updateDate);
 var ticketTypeElements = document.getElementsByName("ticketType");
 
-for (var i = 0; i < ticketTypeElements.length; i++) {
+for (let i = 0; i < ticketTypeElements.length; i++) {
     ticketTypeElements[i].addEventListener("change", updateDate);
 }
 
 function updateDate() {
-    var selectedDate = document.getElementById("inputDate").value;
-    var selectedTicketType;
+    let selectedDate = document.getElementById("inputDate").value;
+    let selectedTicketType;
 
-    for (var i = 0; i < ticketTypeElements.length; i++) {
+    for (let i = 0; i < ticketTypeElements.length; i++) {
         if (ticketTypeElements[i].checked) {
             selectedTicketType = ticketTypeElements[i].value;
             break;
         }
     }
 
-    var outputDateElement = document.getElementById("outputDate");
+    let outputDateElement = document.getElementById("outputDate");
 
     if (selectedDate && selectedTicketType) {
-        var newDate;
+        let newDate;
 
         if (selectedTicketType == "NORMAL") {
             newDate = new Date(selectedDate);
@@ -105,7 +105,7 @@ function updateDate() {
             newDate.setMonth(newDate.getMonth() + 6);
         }
 
-        var formattedDate = newDate.toLocaleDateString();
+        let formattedDate = newDate.toLocaleDateString();
         outputDateElement.textContent = "Data wygaśnięcia karnetu: " + formattedDate;
         document.getElementById("inputEndDate").setAttribute('value',newDate.toISOString().slice(0, 10));
     } else {
