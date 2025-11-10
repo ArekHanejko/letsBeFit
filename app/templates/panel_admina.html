@@ -114,15 +114,15 @@ function validateNumberInput(input) {
 }
 
 document.getElementById('target').addEventListener('input', function() {
-      var inputText = this.value.toLowerCase();
-      var options = document.getElementsByClassName('obslugiwany-option');
+      let inputText = this.value.toLowerCase();
+      let options = document.getElementsByClassName('obslugiwany-option');
 
-      for (var i = 0; i < options.length; i++) {
-            var optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
+      for (let i = 0; i < options.length; i++) {
+            let optionText = options[i].getAttribute('data-obslugiwany').toLowerCase();
             options[i].style.display = optionText.includes(inputText) ? 'block' : 'none';
         }
 
-        for (var i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             if (options[i].style.display !== 'none') {
                 options[i].selected = true;
                 break;
