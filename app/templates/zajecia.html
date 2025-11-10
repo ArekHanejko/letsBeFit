@@ -79,7 +79,7 @@
            
             <div class="pagination justify-content-center">
               <ul class="pagination">
-                  {% if pagination.has_prev - 1 %}
+                  {% if pagination.has_prev%}
                       <li class="page-item">
                           <a class="page-link" href="{{ url_for('workouts.zajecia', page=pagination.page - 1) }}" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
@@ -95,7 +95,7 @@
                       {% endif %}
                   {% endfor %}
                   
-                  {% if pagination.has_next + 1 %}
+                  {% if pagination.has_next %}
                       <li class="page-item">
                           <a class="page-link" href="{{ url_for('workouts.zajecia', page=pagination.page + 1) }}" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
