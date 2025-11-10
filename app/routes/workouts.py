@@ -62,8 +62,9 @@ def zajecia():
 		uzytkownicy_lista = ''
 		dbConnection = dbConnect()
 		dbCursor = dbConnection.cursor()
-		dbCursor.execute("select nazwa_zajec, opis_zajec, czas_zajec, data_zajec, ilosc_miejsc_na_zajecia, id_trenera, uzytkownicy.imie, uzytkownicy.nazwisko from zajecia, uzytkownicy where uzytkownicy.id_uzytkownika=zajecia.id_trenera and data_zajec BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '1 MONTH'  ")
-		total_records = dbCursor.rowcount
+		dbCursor.execute("""SELECT COUNT(*) FROM zajecia z JOIN uzytkownicy u ON u.id_uzytkownika = z.id_trenera WHERE z.data_zajec BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '1 MONTH'""")
+		total_records = dbCursor.fetchone()[0]
+
 		pagination = Pagination(page=page, per_page=per_page, total=total_records, css_framework='bootstrap4')
 		#dbCursor.execute("select nazwa_zajec, opis_zajec, data_zajec, godzina_zajec, czas_zajec, cena_zajec, ilosc_miejsc_na_zajecia, id_trenera,uzytkownicy.imie, uzytkownicy.nazwisko, id_zajec from zajecia, uzytkownicy where uzytkownicy.id_uzytkownika=zajecia.id_trenera ORDER BY data_zajec,czas_zajec desc LIMIT %s OFFSET %s   ",(PER_PAGE, offset))
 		dbCursor.execute("SELECT z.nazwa_zajec, z.opis_zajec, z.data_zajec, z.godzina_zajec, z.czas_zajec, z.cena_zajec, z.ilosc_miejsc_na_zajecia, z.id_trenera, u.imie, u.nazwisko,z.id_zajec, COUNT(zz.id_zajec) AS liczba_zapisow FROM zajecia z JOIN uzytkownicy u ON u.id_uzytkownika = z.id_trenera LEFT JOIN zajecia_zapisy zz ON zz.id_zajec = z.id_zajec where  z.data_zajec BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '1 MONTH' GROUP BY z.id_zajec, u.imie, u.nazwisko ORDER BY z.data_zajec ASC, z.godzina_zajec ASC  LIMIT %s OFFSET %s", ( PER_PAGE, offset))
