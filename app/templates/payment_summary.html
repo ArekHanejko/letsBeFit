@@ -46,7 +46,7 @@
 
 document.querySelectorAll('.statBtn').forEach(function(button) {
       button.addEventListener('click', function() {
-          var status_oplacenia = button.getAttribute('status-oplacenia');
+          let status_oplacenia = button.getAttribute('status-oplacenia');
          
           document.getElementById('stat_opl').value = status_oplacenia;
          
