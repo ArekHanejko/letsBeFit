@@ -79,7 +79,7 @@
            
             <div class="pagination justify-content-center">
               <ul class="pagination">
-                  {% if pagination.has_prev %}
+                  {% if pagination.page - 1 %}
                       <li class="page-item">
                           <a class="page-link" href="{{ url_for('workouts.zajecia', page=pagination.prev_num) }}" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
@@ -95,7 +95,7 @@
                       {% endif %}
                   {% endfor %}
                   
-                  {% if pagination.has_next %}
+                  {% if pagination.page + 1 %}
                       <li class="page-item">
                           <a class="page-link" href="{{ url_for('workouts.zajecia', page=pagination.next_num) }}" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
@@ -119,9 +119,9 @@ document.querySelectorAll('.zalogujBtn').forEach(function(button) {
 
   document.querySelectorAll('.zapiszBtn').forEach(function(button) {
       button.addEventListener('click', function() {
-          var id = button.getAttribute('data-id');
-          var cena = button.getAttribute('data-cena');
-          var nazwa = button.getAttribute('data-nazwa');
+          let id = button.getAttribute('data-id');
+          let cena = button.getAttribute('data-cena');
+          let nazwa = button.getAttribute('data-nazwa');
           document.getElementById('zajeciaId').value = id;
           document.getElementById('zajeciaCena').value = cena;
           document.getElementById('zajeciaNazwa').value = nazwa;
@@ -132,23 +132,18 @@ document.querySelectorAll('.zalogujBtn').forEach(function(button) {
 
     document.querySelectorAll('.wypiszBtn').forEach(function(button) {
     button.addEventListener('click', function() {
-      var id = button.getAttribute('data-id');
-      var cena = button.getAttribute('data-cena');
-      var nazwa = button.getAttribute('data-nazwa');
+      let id = button.getAttribute('data-id');
+      let cena = button.getAttribute('data-cena');
+      let nazwa = button.getAttribute('data-nazwa');
 
-      // Ustawienie wartości pól formularza
       document.getElementById('zajeciaId').value = id;
       document.getElementById('zajeciaCena').value = cena;
       document.getElementById('zajeciaNazwa').value = nazwa;
 
-      // Wywołanie potwierdzenia przed wypisaniem się
-      var confirmation = confirm("Czy na pewno chcesz się wypisać z zajęć?");
+      let confirmation = confirm("Czy na pewno chcesz się wypisać z zajęć?");
       
       if (confirmation) {
-        // Zmiana akcji formularza
         document.getElementById('zapisForm').action = '/odwolaj_zajecia';
-
-        // Ręczne wysłanie formularza do nowej akcji
         document.getElementById('zapisForm').submit();
       }
     });
