@@ -5,12 +5,42 @@ import random
 import string
 from itsdangerous import URLSafeTimedSerializer
 from app.models.database import dbConnect
+import os
+from mailjet_rest import Client
 
 auth_bp = Blueprint('auth', __name__)
 
 def generate_token(length=20):
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for i in range(length))
+
+def send_mailjet_email(to_email, subject, text_body):
+    api_key = os.getenv("MAIL_USERNAME")
+    api_secret = os.getenv("MAIL_PASSWORD")
+    sender = os.getenv("MAIL_SENDER")
+
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": sender,
+                    "Name": "LetsBeFit Siłownia"
+                },
+                "To": [
+                    {"Email": to_email}
+                ],
+                "Subject": subject,
+                "TextPart": text_body
+            }
+        ]
+    }
+    result = mailjet.send.create(data=data)
+    if result.status_code not in [200, 201]:
+        print("Błąd wysyłania maila:", result.status_code, result.json())
+    else:
+        print("E-mail wysłany:", to_email)
 
 @auth_bp.route('/logowanie', methods=["POST","GET"])
 def logowanie_action():
@@ -84,9 +114,9 @@ def rejestracja():
 				haslo = hashlib.sha256(haslo.encode('utf-8')).hexdigest()
 				dbCursor.execute('''INSERT INTO uzytkownicy VALUES (default,%s,%s,%s, %s, %s,%s, CURRENT_DATE,default,default,%s)''', (imie, nazwisko, nr_tel, login, haslo, plec,confirmation_token))
 				dbConnection.commit()
-				msg = Message('Potwierdzenie rejestracji', sender='letsbefit.silownia@gmail.com', recipients=[login])
-				msg.body = f'Kliknij poniższy link, aby potwierdzić rejestrację: {url_for("auth.confirm", token=confirmation_token, _external=True)}'
-				current_app.extensions['mail'].send(msg)
+				confirm_url = url_for("auth.confirm", token=confirmation_token, _external=True)
+				body = f'Kliknij poniższy link, aby potwierdzić rejestrację:\n{confirm_url}'
+				send_mailjet_email(login, "Potwierdzenie rejestracji", body)
 				msg = "Konto utworzone prawidłowo, aby móc się zalogować wejdź w link aktywacyjny wysłany na podanego maila"
 			dbCursor.close()
 			dbConnection.close()
@@ -128,17 +158,14 @@ def reset_hasla():
 		if user:
 			serializer = URLSafeTimedSerializer(current_app.secret_key)
 			token = serializer.dumps(email, salt='reset-hasla-salt')
-			msg = Message('Resetowanie hasła', sender='letsbefit.silownia@gmail.com', recipients=[email])
-			#reset_url = url_for('reset_hasla_potwierdzenie', token=token, _external=True)
 			confirmation_url = url_for('auth.reset_hasla_potwierdzenie', token=token, _external=True)
-			msg.body = f'Aby zresetować hasło, kliknij poniższy link:\n{confirmation_url}'
-			current_app.extensions['mail'].send(msg)
+			body = f'Aby zresetować hasło, kliknij poniższy link:\n{confirmation_url}'
+			send_mailjet_email(email, "Resetowanie hasła", body)
 			msgSuccess = 'Link resetujący hasło został wysłany na podany adres e-mail.'
 			return render_template('reset_hasla.html',msgSuccess=msgSuccess)
 
 	return render_template('reset_hasla.html')
 
-# Endpoint do potwierdzenia resetowania hasła
 @auth_bp.route('/reset_hasla_potwierdzenie/<token>', methods=['GET', 'POST'])
 def reset_hasla_potwierdzenie(token):
 	try:
