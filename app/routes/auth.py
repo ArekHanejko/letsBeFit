@@ -152,7 +152,7 @@ def reset_hasla():
 		email = request.form['email']
 		dbConnection = dbConnect()
 		dbCursor = dbConnection.cursor()
-		dbCursor.execute("SELECT * FROM uzytkownicy WHERE login = 'arekimmobile@gmail.com'")  #%s", (email,))
+		dbCursor.execute("SELECT * FROM uzytkownicy WHERE login = %s", (email,))
 		user = dbCursor.fetchone()
 
 		if user:
