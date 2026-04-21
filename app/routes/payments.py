@@ -127,7 +127,7 @@ def payment_summary():
 		dbCursor = dbConnection.cursor()
 		zakup = request.form["zakup"]
 		if zakup == "karnet":
-			typ_karnetu = request.form["ticketType"]
+			typ_karnetu = request.form.get('ticketType', 'NORMAL')
 			data_rozpoczecia = request.form["inputDate"]
 			data_konca = request.form["inputEndDate"]
 			dbCursor.execute("SELECT cena FROM karnet_ceny WHERE typ_karnetu = '{}'".format(typ_karnetu))
